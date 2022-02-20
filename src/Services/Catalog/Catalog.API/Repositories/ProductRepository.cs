@@ -33,7 +33,6 @@ namespace Catalog.API.Repositories
             return deleteResult.IsAcknowledged
                 && deleteResult.DeletedCount > 0;
 
-            throw new NotImplementedException();
         }
 
         public async Task<Product> GetProduct(string id)
@@ -44,9 +43,14 @@ namespace Catalog.API.Repositories
                             .FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
+        public async Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
         {
-            throw new NotImplementedException();
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Category, categoryName);
+
+            return await _context
+                            .Products
+                            .Find(filter)
+                            .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductByName(string name)
