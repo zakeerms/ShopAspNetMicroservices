@@ -1,4 +1,6 @@
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
+using Discount.Grpc.Protos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,11 @@ namespace Basket.API
             });
 
             services.AddScoped<IBasketRepository, BasketRepository>(); // Registering and dependancy injection
+
+            /*********gRPC Service***********/
+            services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
+                (o => o.Address = new System.Uri(Configuration["GrpcSettings:DiscountUrl"]));
+            services.AddScoped<DiscountGrpcService>(); // Registering and dependancy injection
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
