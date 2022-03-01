@@ -34,7 +34,9 @@ services:
         ACCEPT_EULA: "Y"
     restart: always
     ports:
-        - "1433:1433"
+      - "1433:1433"
+    volumes:
+      - orderdb_data:/var/opt/mssql/data
 
   rabbitmq:
     container_name: rabbitmq
